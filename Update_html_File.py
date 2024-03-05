@@ -1,19 +1,26 @@
 import json
+import subprocess
+# directory = input("Please input the file directory containing new mp3 files: ")
 
-in_file = open("in_file.json") # open json file
-out_file = open("out_file.html") # open html file
+# use subprocess to run PHP file with directory as input
+# PHP file updates json file with new mp3 data
+subprocess.run(["mp3.php"], shell=True)
 
-data = json.loads(in_file.read()) # data is json object
-# iterate through the json list
-for i in data['json obj name']:
-    py_dict = i
-    print(i)
-    
-    output = '"<a href="' + py_dict["jsonLink"] + '">' + py_dict["jsonTitle"] + "</a></p>"
-    
-    # Adding input data to the HTML file
-    out_file.write(output)
+json_file = open("mp3_obj.json", 'r') # open json file
+html_file = open("writeTo.html", 'w') # open html file
+output = ''
+
+json_data = json.loads(json_file.read()) # json_data is json object
+# iterate through the json object
+for i in json_data['mp3_data']:
+    # 'i' is a python dictionary containing "mp3_link" and "mp3_title" as keys,
+    # both containing strings for the mp3 link and title respectively
+    # use i to get the strings to create the html output
+    output += '<a href="' + i["mp3_link"] + '">' + i["mp3_title"] + "</a></p>\n"
+
+# Write to the HTML file
+html_file.write(output)
 
 # Saving the data into the HTML file
-in_file.close()
-out_file.close()
+json_file.close()
+html_file.close()
